@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using System.Linq;
 
+=======
+>>>>>>> acadd79a4b1bd9cc72db0be59374f83436b79370
 // Run the Package Manager Console
 // Install EntityFrameworkCore.SqlServer Package
 // Install EntityFrameworkCore.Tools Package
@@ -24,7 +27,10 @@ using System.Linq;
 //    .UseLoggerFactory(MyLoggerFactory)
 //    .UseSqlServer("Server=(local);Trusted_Connection=True;Database=ShopAppDB");
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> acadd79a4b1bd9cc72db0be59374f83436b79370
 namespace BookApp
 {
     public class BookContext : DbContext
@@ -39,18 +45,24 @@ namespace BookApp
         {
             optionsBuilder
                 .UseSqlServer("Server=(local);Trusted_Connection=True;Database=BookAppDB");
+<<<<<<< HEAD
 
             var options = optionsBuilder.Options;
 
+=======
+>>>>>>> acadd79a4b1bd9cc72db0be59374f83436b79370
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BookAuthor>().HasKey(table => new { table.AuthorId, table.BookId });
+<<<<<<< HEAD
 
           
 
 
+=======
+>>>>>>> acadd79a4b1bd9cc72db0be59374f83436b79370
         }
     }
 
@@ -62,7 +74,13 @@ namespace BookApp
         public DateTime PublishedOn { get; set; }
         public string Publisher { get; set; }
         public decimal Price { get; set; }
+<<<<<<< HEAD
 
+=======
+        /// <summary>
+        /// Holds the url to get the image of the book
+        /// </summary>
+>>>>>>> acadd79a4b1bd9cc72db0be59374f83436b79370
         public string ImageUrl { get; set; }
         //-----------------------------------------------
         //relationships
@@ -117,6 +135,7 @@ namespace BookApp
     {
         static void Main(string[] args)
         {
+<<<<<<< HEAD
 
 
             using (var context = new BookContext())
@@ -143,6 +162,9 @@ namespace BookApp
 
             Console.WriteLine("Hello World!");
 
+=======
+            Console.WriteLine("Hello World!");
+>>>>>>> acadd79a4b1bd9cc72db0be59374f83436b79370
         }
     }
 }
