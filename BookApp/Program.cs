@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 // Run the Package Manager Console
 // Install EntityFrameworkCore.SqlServer Package
 // Install EntityFrameworkCore.Tools Package
@@ -19,6 +20,10 @@ using System.Linq;
 //We can also delete all the tables etc from the database using the command => Update-Database 0
 // And lastly, we can delete the whole database(in this project ShopAppDB) using the command=> Drop-Database
 
+//optionsBuilder
+//    .UseLoggerFactory(MyLoggerFactory)
+//    .UseSqlServer("Server=(local);Trusted_Connection=True;Database=ShopAppDB");
+
 
 namespace BookApp
 {
@@ -34,13 +39,17 @@ namespace BookApp
         {
             optionsBuilder
                 .UseSqlServer("Server=(local);Trusted_Connection=True;Database=BookAppDB");
+
             var options = optionsBuilder.Options;
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BookAuthor>().HasKey(table => new { table.AuthorId, table.BookId });
+
           
+
 
         }
     }
@@ -53,6 +62,7 @@ namespace BookApp
         public DateTime PublishedOn { get; set; }
         public string Publisher { get; set; }
         public decimal Price { get; set; }
+
         public string ImageUrl { get; set; }
         //-----------------------------------------------
         //relationships
@@ -108,6 +118,7 @@ namespace BookApp
         static void Main(string[] args)
         {
 
+
             using (var context = new BookContext())
             {
                 var query1 = context.Books.Include(x => x.BookAuthors).ThenInclude(y => y.Author).
@@ -129,6 +140,9 @@ namespace BookApp
 
             Console.WriteLine("Added Successfully");
            
+
+            Console.WriteLine("Hello World!");
+
         }
     }
 }
