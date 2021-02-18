@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using System.Linq;
 
-=======
->>>>>>> acadd79a4b1bd9cc72db0be59374f83436b79370
 // Run the Package Manager Console
 // Install EntityFrameworkCore.SqlServer Package
 // Install EntityFrameworkCore.Tools Package
@@ -27,10 +24,7 @@ using System.Linq;
 //    .UseLoggerFactory(MyLoggerFactory)
 //    .UseSqlServer("Server=(local);Trusted_Connection=True;Database=ShopAppDB");
 
-<<<<<<< HEAD
 
-=======
->>>>>>> acadd79a4b1bd9cc72db0be59374f83436b79370
 namespace BookApp
 {
     public class BookContext : DbContext
@@ -45,24 +39,18 @@ namespace BookApp
         {
             optionsBuilder
                 .UseSqlServer("Server=(local);Trusted_Connection=True;Database=BookAppDB");
-<<<<<<< HEAD
 
             var options = optionsBuilder.Options;
 
-=======
->>>>>>> acadd79a4b1bd9cc72db0be59374f83436b79370
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BookAuthor>().HasKey(table => new { table.AuthorId, table.BookId });
-<<<<<<< HEAD
 
           
 
 
-=======
->>>>>>> acadd79a4b1bd9cc72db0be59374f83436b79370
         }
     }
 
@@ -74,19 +62,96 @@ namespace BookApp
         public DateTime PublishedOn { get; set; }
         public string Publisher { get; set; }
         public decimal Price { get; set; }
-<<<<<<< HEAD
-
-=======
-        /// <summary>
-        /// Holds the url to get the image of the book
-        /// </summary>
->>>>>>> acadd79a4b1bd9cc72db0be59374f83436b79370
         public string ImageUrl { get; set; }
         //-----------------------------------------------
         //relationships
         public PriceOffer PriceOffers { get; set; }
         public ICollection<Review> Reviews { get; set; }
         public ICollection<BookAuthor> BookAuthors { get; set; }
+
+
+        public void GetBooksByAuthor(string author)
+        {
+            using (var context = new BookContext())
+            {
+                var query1 = context.Books.Include(x => x.BookAuthors).ThenInclude(y => y.Author).
+                    Select(b => new
+                    {
+                        Title = b.Title,
+                        AuthorName = b.BookAuthors.Select(x => x.Author.Name)
+                    }
+                          ).Where(n => n.AuthorName.Contains(author)).ToList();
+
+                foreach (var item in query1)
+                {
+                    Console.WriteLine($"Book Name : {item.Title}");
+                }
+
+            }
+
+        }
+
+        public void InsertBook()
+        {
+
+            Console.WriteLine("Enter book title: ");
+            var title = Console.ReadLine();
+            Console.WriteLine("Enter book description: ");
+            var description = Console.ReadLine();
+            Console.WriteLine("Enter book publisher: ");
+            var publisher = Console.ReadLine();
+            Console.WriteLine("Enter book price:");
+            var price = Console.ReadLine();
+            decimal bookprice = Convert.ToDecimal(price);
+            Console.WriteLine("Enter author of the book:");
+            var bookauthor = Console.ReadLine();
+            using (var context = new BookContext())
+            {
+                var book = new Book
+                {
+                    Title = title,
+                    PublishedOn = DateTime.Today,
+                    Description = description,
+                    Publisher = publisher,
+                    Price = bookprice,
+                    Reviews = new List<Review>()
+                        {
+                            new Review
+                            {
+                                NumStars = 5,
+                                Comment = "Excellent book!",
+                                VoterName = "Mr Connor"
+                            },
+                            new Review
+                            {
+                                NumStars = 5,
+                                Comment = "I liked it",
+                                VoterName = "Mrs Trump"
+                            }
+                        }
+
+                };
+
+                var author = new Author
+                {
+                    Name = bookauthor
+                };
+
+                book.BookAuthors = new List<BookAuthor>
+                    {
+                        new BookAuthor
+                        {
+                            Book = book,
+                            Author = author
+                        }
+                    };
+
+                context.Add(book);
+                context.SaveChanges();
+            }
+        }
+
+
     }
 
     public class Author
@@ -129,42 +194,32 @@ namespace BookApp
         public int BookId { get; set; }
     }
 
-
+    
 
     class Program
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
-
-
+            var b1 = new Book();
+            //b1.GetBooksByAuthor("Jared Diamond");
+            //b1.InsertBook();
             using (var context = new BookContext())
             {
-                var query1 = context.Books.Include(x => x.BookAuthors).ThenInclude(y => y.Author).
-                    Select(b => new
-                                {
-                                    Title = b.Title,
-                                    AuthorName = b.BookAuthors.Select(x => x.Author.Name)
-                                }
-                          ).Where(n => n.AuthorName.Contains("Jared Diamond")).ToList();
-
-                foreach (var item in query1)
-                {
-                    Console.WriteLine($"Book Name : {item.Title}");
-                }
-
+                var book = context.Books
+                .Single(p => p.Title == "Pro Entity Framework Core");
+                book.Price = 7.43M;
+                context.SaveChanges();
             }
+            Console.WriteLine("Updated");
+
+            
 
 
 
-            Console.WriteLine("Added Successfully");
-           
 
-            Console.WriteLine("Hello World!");
 
-=======
-            Console.WriteLine("Hello World!");
->>>>>>> acadd79a4b1bd9cc72db0be59374f83436b79370
+
+
         }
     }
 }
